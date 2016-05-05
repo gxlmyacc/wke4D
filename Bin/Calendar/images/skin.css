@@ -1,0 +1,56 @@
+/* CSS Document */
+
+
+.topBar {
+    background-image: url(topBarC.gif);
+    border: 1px solid #99BBE8;
+}
+
+.topBar SPAN {
+    color: #15428B;
+}
+
+
+.lsArrow{
+background-image:url(tool-sprites.gif); background-position:0px 180px;}
+.lsArrow:hover{
+background-image:url(tool-sprites.gif); background-position:15px 180px;}
+.lArrow{
+background-image:url(tool-sprites.gif); background-position:0px 255px;}
+.lArrow:hover{
+background-image:url(tool-sprites.gif); background-position:15px 255px;}
+.rsArrow{
+background-image:url(tool-sprites.gif); background-position:0px 195px;}
+.rsArrow:hover{
+background-image:url(tool-sprites.gif); background-position:15px 195px;}
+.rArrow{
+background-image:url(tool-sprites.gif); background-position:0px 240px;}
+.rArrow:hover{
+background-image:url(tool-sprites.gif); background-position:15px 240px;}
+
+
+.cadTable thead tr{
+background-color:#99BBE8;}
+.cadTable tbody td{
+border:1px solid #99BBE8;}
+
+
+
+/*calendar*/
+.calTit{
+background-image:url(calTit.jpg);}
+.calWeekTit{
+background-color:#99BBE8; color:#15428B;}
+.calTit FONT{
+color:#15428B;}
+table.biao td {
+border: 1px solid #99BBE8;}
+.pop{
+border:1px solid #99BBE8;}
+#teshu{
+background-color:#e6eef7; background-image:url(topBarC.gif);}
+.jinri {
+background: #cfdff0;}
+.cal_next{
+color:#15428B;}
+

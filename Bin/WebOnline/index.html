@@ -1,0 +1,59 @@
+<meta http-equiv=Content-Type content="text/html;charset=utf-8">
+<style>
+body{
+    background-color: transparent;
+}
+</style>
+<script>
+var str='var test';
+function func_1()
+{
+	malert(document.getElementById('immm').value);
+}
+function func_2()
+{
+	malert(str);
+}
+function func_3()
+{
+	malert(testCount);
+}
+function func_4()
+{
+	malert('test');
+}
+function func_5()
+{
+	malert(document.body.innerHTML);
+}
+function func_6()
+{
+	nalert();
+}
+
+function func_7()
+{
+  TestObj.ShowMessage('dddd');
+}
+	
+</script>
+<body style="overflow:hidden;" >
+<div style="width:100%;height:30;background-color:blue;" onmousedown="WindowCommand('drag');">测试</div>
+<div class="input-prepend" style='background-color: #FFFFFF;width:30%;'>
+<input id='immm' style="width:100%;height:30" value="test" ><br>
+<input type="button" style="width:100%;height:30" value="∧input" onclick="func_1()"><br>
+<input type="button" style="width:100%;height:30" value="malert(str)" onclick="func_2()"><br>
+<input type="button" style="width:100%;height:30" value="malert(testCount)" onclick="func_3()"><br>
+<input type="button" style="width:100%;height:30" value="malert('test')" onclick="func_4()"><br>
+<input type="button" style="width:100%;height:30" value="malert(document.body.innerHTML)" onclick="func_5()"><br>
+<input type="button" style="width:100%;height:30" value="nalert()" onclick="func_6()">
+<input type="button" style="width:100%;height:30" value="malert('test');" onclick="malert('test');">
+<input type="button" style="width:100%;height:30" value="nalert();" onclick="nalert();">
+<input type="button" style="width:100%;height:30" value="func_7('dddd');" onclick="func_7();">
+<input type="button" style="width:100%;height:30" value="TestObj.ShowMessage('dddd')" onclick="TestObj.ShowMessage('dddd');">
+<input type="button" style="width:100%;height:30" value="malert(TestObj.Name);" onclick="malert(TestObj.Name);">
+<input type="button" style="width:100%;height:30" value="malert(TestObj.Name = 'abc111');" onclick="malert(TestObj.Name = 'abc111');">
+<input type="button" style="width:100%;height:30" value="close" onclick="WindowCommand('close');">
+</div>
+<iframe src="./x.html" allowtransparency="true" style="background-color:transparent; " title="test" frameborder="0" width="660" height="500" scrolling="no"></iframe>
+</body>

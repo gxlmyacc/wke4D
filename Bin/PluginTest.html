@@ -1,0 +1,30 @@
+﻿<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<HTML>
+<HEAD>
+
+<TITLE>Delphi NS 插件示例</TITLE>
+
+
+</HEAD>
+<BODY>
+<H2>Delphi NS 插件示例</H2>
+<HR>
+<object id="embed1" type="application/x-delphi-demo-plugin" width=400 height=300>
+  <param name="param1" value="张三123" />
+  <param name="param2" value="123456" />
+</object>
+<P>
+<script>
+  var embed1 = document.getElementById('embed1');
+</script>
+
+<br />
+
+<form name="formname">
+  <input type=button value="显示值" onclick='alert("Value=" + embed1.value);'>
+  <input type=button value="自增" onclick='embed1.value=parseInt(embed1.value) + 1;'>
+  <input type=button value="移动按钮" onclick='embed1.MoveButton(2);'>
+</form>
+
+</BODY>
+</HTML>

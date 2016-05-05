@@ -1,0 +1,45 @@
+#------------------------------------------------------------------------------
+VERSION = BWS.01
+#------------------------------------------------------------------------------
+!ifndef ROOT
+ROOT = $(MAKEDIR)\..
+!endif
+#------------------------------------------------------------------------------
+MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
+DCC = $(ROOT)\bin\dcc32.exe $**
+BRCC = $(ROOT)\bin\brcc32.exe $**
+#------------------------------------------------------------------------------
+PROJECTS = Wke4D.dll WebOnline.exe Mac.exe Calendar.exe FlashDemo.exe \
+  CardDemo.exe BallPool.exe CSSBubbles.exe WkeTest.exe
+#------------------------------------------------------------------------------
+default: $(PROJECTS)
+#------------------------------------------------------------------------------
+
+Wke4D.dll: Src\Wke4D.dpr
+  $(DCC)
+
+WebOnline.exe: Demos\WebOnline\WebOnline.dpr
+  $(DCC)
+
+Mac.exe: Demos\Mac\Mac.dpr
+  $(DCC)
+
+Calendar.exe: Demos\Calendar\Calendar.dpr
+  $(DCC)
+
+FlashDemo.exe: Demos\FlashDemo\FlashDemo.dpr
+  $(DCC)
+
+CardDemo.exe: Demos\CardDemo\CardDemo.dpr
+  $(DCC)
+
+BallPool.exe: Demos\BallPool\BallPool.dpr
+  $(DCC)
+
+CSSBubbles.exe: Demos\CSSBubbles\CSSBubbles.dpr
+  $(DCC)
+
+WkeTest.exe: Demos\WkeTest\WkeTest.dpr
+  $(DCC)
+
+
