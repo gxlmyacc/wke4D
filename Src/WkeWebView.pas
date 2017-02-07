@@ -707,6 +707,20 @@ begin
   FThis := Pointer(AThis);
   FObjectList := TWkeJsObjectList.Create;
 
+//  Trace('wkeOnTitleChanged'+ IntToStr(Integer(@WAPI.wkeOnTitleChanged)));
+//  Trace('wkeOnURLChanged'+ IntToStr(Integer(@WAPI.wkeOnURLChanged)));
+//  Trace('wkeOnPaintUpdated'+ IntToStr(Integer(@WAPI.wkeOnPaintUpdated)));
+//  Trace('wkeOnAlertBox'+ IntToStr(Integer(@WAPI.wkeOnAlertBox)));
+//  Trace('wkeOnConfirmBox'+ IntToStr(Integer(@WAPI.wkeOnConfirmBox)));
+//  Trace('wkeOnPromptBox'+ IntToStr(Integer(@WAPI.wkeOnPromptBox)));
+//  Trace('wkeOnConsoleMessage'+ IntToStr(Integer(@WAPI.wkeOnConsoleMessage)));
+//  Trace('wkeOnNavigation'+ IntToStr(Integer(@WAPI.wkeOnNavigation)));
+//  Trace('wkeOnCreateView'+ IntToStr(Integer(@WAPI.wkeOnCreateView)));
+//  Trace('wkeOnDocumentReady'+ IntToStr(Integer(@WAPI.wkeOnDocumentReady)));
+//  Trace('wkeOnLoadingFinish'+ IntToStr(Integer(@WAPI.wkeOnLoadingFinish)));
+//  Trace('wkeSetUserAgent'+ IntToStr(Integer(@WAPI.wkeSetUserAgent)));
+//  Trace('wkeSetUserData'+ IntToStr(Integer(@WAPI.wkeSetUserData)));
+
   WAPI.wkeOnTitleChanged(FWebView, _wkeTitleChangedCallback, Self);
   WAPI.wkeOnURLChanged(FWebView, _wkeURLChangedCallback, Self);
   WAPI.wkeOnPaintUpdated(FWebView, _wkePaintUpdatedCallback, Self);
@@ -809,8 +823,8 @@ var
 begin
   if FDestroying then
     Exit;
-  if FThis = nil  then
-    Exit;
+  if FWebView = nil then Exit;
+  if FThis = nil then Exit;
     
   if (not IsIconic(this.GetHwnd)) and IsDirty and IsWindowVisible(This.GetHwnd) then
   begin
@@ -1196,10 +1210,11 @@ begin
       if sFile[1] = '\' then
         System.Delete(sFile, 1, 1);
     end;
-    
+
     CurrentLoadDir := ExtractFilePath(sFile);
 
-    sFile := HTTPEncode(sFile);
+    sFile := EncodeURI(sFile);
+         
     WAPI.wkeLoadFileW(FWebView, PUnicodeChar(sFile));
     DoAfterLoadHtml();
   except
@@ -2169,8 +2184,10 @@ begin
   LWebView := Self;
   inherited Create(LWebView, FWebView, False);
   LWebView := nil;
-  WAPI.wkeOnWindowClosing(FWebView, _OnWindowClosing, Self);
-  WAPI.wkeOnWindowDestroy(FWebView, _OnWindowDestroy, Self);
+  if @WAPI.wkeOnWindowClosing <> nil then
+    WAPI.wkeOnWindowClosing(FWebView, _OnWindowClosing, Self);
+  if @WAPI.wkeOnWindowDestroy <> nil then
+    WAPI.wkeOnWindowDestroy(FWebView, _OnWindowDestroy, Self);
 end;
 
 destructor TWkeWindow.Destroy;
@@ -2178,8 +2195,10 @@ begin
   Windows.Sleep(10);
   if FWebView <> nil then
   begin
-    WAPI.wkeOnWindowClosing(FWebView, nil, nil);
-    WAPI.wkeOnWindowDestroy(FWebView, nil, nil);
+    if @WAPI.wkeOnWindowClosing <> nil then
+      WAPI.wkeOnWindowClosing(FWebView, nil, nil);
+    if @WAPI.wkeOnWindowDestroy <> nil then
+      WAPI.wkeOnWindowDestroy(FWebView, nil, nil);
   end;
   inherited;
   FWebView := nil;
@@ -2189,7 +2208,8 @@ procedure TWkeWindow.DestroyWindow;
 begin
   if FWebView <> nil then
   begin
-    WAPI.wkeDestroyWebWindow(FWebView);
+    if @WAPI.wkeOnWindowDestroy <> nil then
+      WAPI.wkeDestroyWebWindow(FWebView);
     FWebView := nil;
   end;
 end;

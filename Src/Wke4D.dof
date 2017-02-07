@@ -101,7 +101,7 @@ DebugSourceDirs=
 UsePackages=0
 [Parameters]
 RunParams=
-HostApplication=E:\桌面\wke-master\wke4D\Bin\WebOnline.exe
+HostApplication=E:\文档\作业\Github\wke4D\Bin\WebOnline.exe
 Launcher=
 UseLauncher=0
 DebugCWD=

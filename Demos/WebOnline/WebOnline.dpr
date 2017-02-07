@@ -1,13 +1,6 @@
 program WebOnline;
 
 uses
-  {$IF CompilerVersion > 15.0}
-  SimpleShareMem,
-  {$ELSE}
-  FastMM4,
-  Fastcode,
-  FastMove,
-  {$IFEND}
   SysUtils,
   WkeImportDefs,
   WkeIntf,

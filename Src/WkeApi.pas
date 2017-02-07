@@ -506,6 +506,7 @@ function V2J(es: jsExecState; const vValue: OleVariant; var jValue: jsValue;
 function J2V(es: jsExecState; const jValue: jsValue; var vValue: OleVariant;
   var sError: string): Boolean;
 
+function EncodeURI(const WS: WideString): WideString;
 function HTTPDecode(const AStr: string): string;
 function HTTPEncode(const AStr: string): string;
 
@@ -789,35 +790,77 @@ begin
 end;
 
 function HTTPEncode(const AStr: string): string;
-// The NoConversion set contains characters as specificed in RFC 1738 and
-// should not be modified unless the standard changes.
 const
-  NoConversion = ['A'..'Z','a'..'z','*','@','.','_','-', '0'..'9','$','!','''','(',')'];
+  NoConversion = ['A'..'Z','a'..'z','*','@','.','_','-',
+                  '0'..'9','$','!','''','(',')'];
 var
+  Sp: PAnsiChar;
   Rp: PChar;
   sStr: UTF8String;
-  Sp: PAnsiChar;
+  sResult: string;
 begin
   sStr := UTF8Encode(AStr);
-  SetLength(Result, Length(sStr) * 3);
+  SetLength(sResult, Length(sStr) * 3);
   Sp := PAnsiChar(sStr);
-  Rp := PChar(Result);
+  Rp := PChar(sResult);
   while Sp^ <> #0 do
   begin
     if Sp^ in NoConversion then
-      Rp^ := Chr(Ord(Sp^))
+      Rp^ := Char(Sp^)
     else
     if Sp^ = ' ' then
       Rp^ := '+'
     else
     begin
-      FormatBuf(Rp, 3, '%%%.2x', 6, [Ord(Sp^)]);
-      Inc(Rp,2);
+      FormatBuf(Rp{$IF CompilerVersion <= 18.5}^{$IFEND}, 3, '%%%.2x', 6, [Ord(Sp^)]);
+      Inc(Rp, 2);
     end;
     Inc(Rp);
     Inc(Sp);
   end;
-  SetLength(Result, Rp - PChar(Result));
+  SetLength(sResult, Rp - PChar(sResult));
+  Result := sResult;
+end;
+
+function EncodeURI(const WS: WideString): WideString;
+  function IsMultiByte(const Str: PWideChar; const Index: Cardinal): Boolean;
+  begin
+    Result := Word(Str[Index]) > 128;
+  end;
+var
+  i, iLen: Integer;
+  s1, sResult: WideString;
+  p: PWideChar;
+begin
+  iLen := Length(WS);
+  p := PWideChar(WS);
+  i := 0;
+  while i < iLen do
+  begin
+    case IsMultiByte(p, i) of
+      False:
+      begin
+        if s1 <> '' then
+        begin
+          sResult := sResult + HTTPEncode(s1);
+          s1 := '';
+        end;
+        sResult := sResult + p[i];
+        i := i + 1;
+      end;
+      True:
+      begin
+        s1 := s1 + p[i];
+        i := i + 1;
+      end;
+    end;
+  end;
+  if s1 <> EmptyStr then
+  begin
+    sResult := sResult + HTTPEncode(s1);
+    s1 := EmptyStr;
+  end;
+  Result := sResult;
 end;
 
 { TWkeAPI }
@@ -1114,10 +1157,14 @@ begin
   if not GetLoaded then
     Exit;
   if @wkeFinalize <> nil then
-  begin
+  try
     wkeFinalize;
     Sleep(10);
-  end;
+  except
+    on E: Exception do
+      OutputDebugString(PChar('[TWkeAPI.UnloadDLL]'+E.Message));
+  end;             
+
   @wkeInitialize := nil;
   @wkeInitializeEx := nil;
   @wkeConfigure := nil;
